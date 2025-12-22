@@ -1,38 +1,43 @@
-!<!DOCTYPE html>
+!
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <!-- <script src="../js/jquery-3.7.1.min.js"></script> -->
-         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <style>
-            *{
-                margin:0;
-                padding:0;
-                box-sizing:border-box;
-            }
-            body{
-                font-family:Arial,sans-serif;
-                background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                display:flex;
-                justify-content: center;
-                align-items: center;
-                min-height: 100vh;
-                padding: 20px;
-            }
-            .charging-device{
-                background: linear-gradient(145deg, #e6e6e6, #ffffff);
-                border-radius: 30px;
-                padding: 30px;
-                box-shadow: 0 20px 60px  rgba(0, 0, 0, 0.3);
-                max-width: 500px;
-                width: 100%;
-            }
-            .lcd-display {
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <!-- <script src="../js/jquery-3.7.1.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .charging-device {
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .lcd-display {
             background: linear-gradient(180deg, #a8d5a8 0%, #8bc68b 100%);
             border: 8px solid #3d5a3d;
             border-radius: 8px;
@@ -48,7 +53,8 @@
             margin-bottom: 10px;
         }
 
-        .voltage, .current {
+        .voltage,
+        .current {
             font-size: 32px;
             font-weight: bold;
             color: #2d4a2d;
@@ -170,122 +176,256 @@
             font-size: 60px;
             color: #555;
         }
-        </style>
-    </head>
-    <body>
-        <div class="charging-device">
-            <div class="lcd-display">
-                <div class="lcd-top">
-                    <div class="voltage"><span id="voltage">240.55</span>V</div>
-                    <div class="current"><span id="current">4.3</span> A</div>
-                </div>
-                <div class="lcd-bottom">
-                    <div class="energy"><span id="transmitted">18.73</span> KWh</div>
-                    <div class="datetime"><span id="datetime">19 Dec 2025 2:13:10PM</span> A</div>
-                </div>
+
+        /* ===== SLIDE TO STOP BUTTON ===== */
+
+        .slide-wrapper {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .slide-track {
+            position: relative;
+            height: 90px;
+            background: linear-gradient(145deg, #cfd9df, #f5f7fa);
+            border-radius: 60px;
+            box-shadow:
+                inset 4px 4px 8px rgba(0, 0, 0, 0.25),
+                inset -4px -4px 8px rgba(255, 255, 255, 0.9),
+                0 12px 25px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .slide-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 90px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #555;
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+
+        .slide-thumb {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            height: 74px;
+            width: 74px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #3498db, #1f6fb2);
+            box-shadow:
+                0 6px 15px rgba(0, 0, 0, 0.4),
+                inset 2px 2px 6px rgba(255, 255, 255, 0.6);
+            color: #fff;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: grab;
+            transition: background 0.2s;
+        }
+
+        .slide-thumb:active {
+            cursor: grabbing;
+            box-shadow:
+                0 3px 8px rgba(0, 0, 0, 0.5),
+                inset 1px 1px 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .slide-track.success {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+        }
+
+        .slide-track.success .slide-text {
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="charging-device">
+        <div class="lcd-display">
+            <div class="lcd-top">
+                <div class="voltage"><span id="voltage">240.55</span>V</div>
+                <div class="current"><span id="current">4.3</span> A</div>
             </div>
-            <div class="status-panel">
-                <h2>Charging status</h2>
-                <div class="status-item">
-                    <div class="status-label">
-                        <span class="icon">🔋</span>
-                        <span>Needed</span>
-                    </div>
-                    <div class="status-value"><span id="needed">30</span>KWh</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">
-                        <span class="icon">⚡</span>
-                        <span>Remaining</span>
-                    </div>
-                    <div class="status-value"><span id="remaining">12</span>KWh</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">
-                        <span class="icon">📡</span>
-                        <span>Transmitted</span>
-                    </div>
-                    <div class="status-value"><span id="transmitted2">18.73</span>KWh</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">
-                        <span class="icon">⏱️</span>
-                        <span>Time Elapsed</span>
-                    </div>
-                    <div class="status-value" id="elapsed">1 hr 30 min</div>
-                </div>
-                <div class="status-item">
-                    <div class="status-label">
-                        <span class="icon">⏳</span>
-                        <span>Estimated Time</span>
-                    </div>
-                    <div class="status-value" id="estimated">1 hr 10 min</div>
-                </div>
+            <div class="lcd-bottom">
+                <div class="energy"><span id="transmitted">18.73</span> KWh</div>
+                <div class="datetime"><span id="datetime">19 Dec 2025 2:13:10PM</span> A</div>
             </div>
-            <div class="chart-section">
-                <h3>Charging pattern ( Current vs Time )</h3>
-                <div class="chart-container" id="chart"></div>
-            </div>
-            <button class="stop-button" id="stopBtn">
-                Stop
-                <span class="arrow">◀</span>
-            </button>
         </div>
-        <script>
-            $(document).ready(function() {
-                const numBars=50;
-                for(let i=0;i<numBars;i++){
-                    const height=100-(i*1.5)+Math.random()*10;
-                    $('<div class="bar"></div>')
-                        .css('height',Math.max(height,20)+'%')
-                        .appendTo('#chart');
-                }
-                function updateDateTime(){
-                    const now=new Date();
-                    const options={
-                        day:'2-digit',
-                        month:'short',
-                        year: 'numeric', 
-                        hour: 'numeric', 
-                        minute: '2-digit', 
-                        second: '2-digit',
-                        hour12: true 
-                    };
-                    const formatted=now.toLocaleString('en-GB',options)
-                        .replace(',','');
-                    $('#datetime').text(formatted);
-                }
-                updateDateTime();
-                setInterval(updateDateTime,1000);
+        <div class="status-panel">
+            <h2>Charging status</h2>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="icon">🔋</span>
+                    <span>Needed</span>
+                </div>
+                <div class="status-value"><span id="needed">30</span>KWh</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="icon">⚡</span>
+                    <span>Remaining</span>
+                </div>
+                <div class="status-value"><span id="remaining">12</span>KWh</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="icon">📡</span>
+                    <span>Transmitted</span>
+                </div>
+                <div class="status-value"><span id="transmitted2">18.73</span>KWh</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="icon">⏱️</span>
+                    <span>Time Elapsed</span>
+                </div>
+                <div class="status-value" id="elapsed">1 hr 30 min</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">
+                    <span class="icon">⏳</span>
+                    <span>Estimated Time</span>
+                </div>
+                <div class="status-value" id="estimated">1 hr 10 min</div>
+            </div>
+        </div>
+        <div class="chart-section">
+            <h3>Charging pattern ( Current vs Time )</h3>
+            <div class="chart-container" id="chart"></div>
+        </div>
 
-                let elapsed=90;
-                let transmitted=18.73;
-                let current=4.3;
-                let voltage=240.55;
-                setInterval(function(){
-                    elapsed+=1;
-                    transmitted+=0.02;
-                    current=(4.0+Math.random()*0.6).toFixed(1);
-                    voltage=(239+Math.random()*3).toFixed(2);
+        <div class="slide-wrapper" id="slideStop">
+            <div class="slide-track">
+                <span class="slide-text">SLIDE TO STOP</span>
+                <div class="slide-thumb">⏻</div>
+            </div>
+        </div>
 
-                    const remaining=(30-transmitted).toFixed(2);
-                    const hours=Math.floor(elapsed/60);
-                    const mins=elapsed%60;
+    </div>
+    <script>
+        $(document).ready(function () {
+            const numBars = 50;
+            for (let i = 0; i < numBars; i++) {
+                const height = 100 - (i * 1.5) + Math.random() * 10;
+                $('<div class="bar"></div>')
+                    .css('height', Math.max(height, 20) + '%')
+                    .appendTo('#chart');
+            }
+            function updateDateTime() {
+                const now = new Date();
+                const options = {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: true
+                };
+                const formatted = now.toLocaleString('en-GB', options)
+                    .replace(',', '');
+                $('#datetime').text(formatted);
+            }
+            updateDateTime();
+            const dateInterval = setInterval(updateDateTime, 1000);
 
-                    $('#transmitted').text(transmitted.toFixed(2));
-                    $('#transmitted2').text(transmitted.toFixed(2));
-                    $('#remaining').text(remaining);
-                    $('#current').text(current);
-                    $('#voltage').text(voltage);
-                    $('#elapsed').text(`${hours} hr ${mins} min`);
-                },5000);
-                $('#stopBtn').click(function(){
-                    $(this).text('Stopping...');
-                    setTimeout(function(){
-                        alert('Charging session stopped!');
-                    },1000);
-                });
+            let elapsed = 90;
+            let transmitted = 18.73;
+            let current = 4.3;
+            let voltage = 240.55;
+            const chargingInterval=setInterval(function () {
+                elapsed += 1;
+                transmitted += 0.02;
+                current = (4.0 + Math.random() * 0.6).toFixed(1);
+                voltage = (239 + Math.random() * 3).toFixed(2);
+
+                const remaining = (30 - transmitted).toFixed(2);
+                const hours = Math.floor(elapsed / 60);
+                const mins = elapsed % 60;
+
+                $('#transmitted').text(transmitted.toFixed(2));
+                $('#transmitted2').text(transmitted.toFixed(2));
+                $('#remaining').text(remaining);
+                $('#current').text(current);
+                $('#voltage').text(voltage);
+                $('#elapsed').text(`${hours} hr ${mins} min`);
+            }, 5000);
+            $('#stopBtn').click(function () {
+                $(this).text('Stopping...');
+                setTimeout(function () {
+                    alert('Charging session stopped!');
+                }, 1000);
             });
-        </script>
-    </body>
+
+            let dragging = false;
+            let startX = 0;
+            let currentX = 0;
+
+            const track = document.querySelector('.slide-track');
+            const thumb = document.querySelector('.slide-thumb');
+            const maxSlide = track.offsetWidth - thumb.offsetWidth - 8;
+
+            function startDrag(e) {
+                dragging = true;
+                startX = e.type.includes('touch')
+                    ? e.touches[0].clientX
+                    : e.clientX;
+            }
+
+            function onDrag(e) {
+                if (!dragging) return;
+
+                currentX = e.type.includes('touch')
+                    ? e.touches[0].clientX
+                    : e.clientX;
+
+                let diff = currentX - startX;
+                diff = Math.max(0, Math.min(diff, maxSlide));
+                thumb.style.left = diff + 8 + 'px';
+            }
+
+            function endDrag() {
+                if (!dragging) return;
+                dragging = false;
+
+                const thumbLeft = thumb.offsetLeft;
+
+                if (thumbLeft >= maxSlide * 0.85) {
+                    // SUCCESSFUL SLIDE
+                    thumb.style.left = maxSlide + 'px';
+                    track.classList.add('success');
+                    track.querySelector('.slide-text').textContent = 'STOPPED';
+
+                    clearInterval(dateInterval);
+                    clearInterval(chargingInterval);
+                    setTimeout(() => {
+                        alert('Charging session stopped!');
+                    }, 500);
+                } else {
+                    // RESET
+                    thumb.style.left = '8px';
+                }
+            }
+
+            thumb.addEventListener('mousedown', startDrag);
+            thumb.addEventListener('touchstart', startDrag);
+
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('touchmove', onDrag);
+
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+
+        });
+    </script>
+</body>
+
 </html>
