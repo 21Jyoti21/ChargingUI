@@ -500,7 +500,7 @@
             connectTimeout: 4000,
             reconnectPeriod: 1000
         };
-        const client = mqtt.connect("ws://65.0.141.225:9001/mqtt", options);
+        const client = mqtt.connect("wss://65.0.141.225:9001/mqtt", options);
 
         client.on("connect", function () {
             console.log("✅ Connected to MQTT broker");
@@ -723,3 +723,4 @@
 </body>
 
 </html>
+
