@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charging Mode Selection Demo</title>
+    <link rel="stylesheet" href="./charging_mode_selection.css">
+    <script src="./charging_mode_selection.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="lcd">
+        <h2 id="line1">Charging Mode Selection Demo</h2>
+        <hr>
+        </div>
+
+        <div id="config-panel"></div>
+  </div>
+  <script>
+    const configPanel=new ConfigPanel(
+        document.getElementById("config-panel"), 
+        ["Full Charge", "Set Time", "Set Units"],
+        (data) => {                              
+          console.log("CONFIG CHANGED:", data);
+        }
+    )
+  </script>
+</body>
+</html>
