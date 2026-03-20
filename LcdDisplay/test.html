@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCD Display Demo</title>
+    <link rel="stylesheet" href="./lcd_display.css">
+    <script src="./meter_data.js"></script>
+    <script src="./lcd_display.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="lcd">
+            <h2 id="line1">LCD Display Demo</h2>
+            <hr>
+            <div>
+                <button onclick="lcdDisplay.startCharging(meterSeries)"> Charging Start </button>
+                <button onclick="lcdDisplay.stopCharging()"> Charging Stop </button> 
+                <button onclick="lcdDisplay.reset()"> Reset </button> 
+            </div>
+            <hr>
+        </div>
+        <div id="lcd-container">
+        </div>
+    </div>
+    <script>
+        const lcdDisplay=new LcdDisplay(
+            document.getElementById("lcd-container")
+        );
+    </script>
+</body>
+</html>
