@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charging Chart Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="./ChargingChart.css">
+    <script src="./meterData.js"></script>
+    <script src="./ChargingChart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="lcd">
+            <h2 id="line1">Slider Button Demo</h2>
+            <hr>
+            <div>
+                <button onClick="chart.startCharging(meterDataSample)">Active</button>
+                <button onClick="chart.stopCharging()">Deactive</button>
+            </div>
+            <hr>
+        </div>
+        <div id="chart-section"></div>
+    </div>
+    <script>
+        const chart=new ChargingChart(
+            document.getElementById("chart-section"),
+            {
+                tabs: ["Current", "Voltage", "Power"]
+            },
+            (data) => {
+                console.log("CHART CALLBACK:", data);
+            }
+        )
+    </script>
+</body>
+</html>
