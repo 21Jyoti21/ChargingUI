@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitleBar Demo</title>
+    <link rel="stylesheet" href="./title.css"> <!--connected to css-->
+    <script src="./data.js"></script>
+    <script src="./title.js"></script>
+</head>
+<body>
+    <div class="container">
+    <div class="lcd">
+      <h2 id="line1">TitleBar Demo</h2>
+      <hr>
+      <div>
+         <!-- <button onclick="slider.activate(true)"> Active </button>
+         <button onclick="slider.activate(false)"> Deactive </button>  -->
+         <!-- <button onclick="slider.showProgress('Starting...')"> Show Progress </button> 
+         <button onclick="slider.hideProgress()"> Hide Progress </button>  -->
+      </div>
+      <hr>
+    </div>
+
+    <div id="title-container"></div>
+  </div>
+  <script>
+    const title=new TitleBar(
+        document.getElementById("title-container"),
+        {
+            titleText: data.titleText,
+            backgColor: data.backgColor,
+            profileImg:data.profileImg
+        }
+    )
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+.title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    color: white;
+    border-radius: 8px;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.title-text {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.title-right {
+    display: flex;
+    align-items: center;
+}
+
+.title-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
