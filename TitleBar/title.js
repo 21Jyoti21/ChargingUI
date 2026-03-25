@@ -22,9 +22,12 @@ class TitleBar{
         if (config.backgColor) {
             this.titleBar.style.backgroundColor = config.backgColor;
         }
-
-        if (config.profileImg) {
-            this.profile.src = config.profileImg;
+        //remove profile img
+        // if (config.profileImg) {
+        //     this.profile.src = config.profileImg;
+        // }
+        if (config.logo) {
+            this.logo.innerHTML = `<img src="${config.logo}" class="logo-img"/>`;
         }
     }
     _createUI(){
@@ -41,7 +44,6 @@ class TitleBar{
 
         this.title = document.createElement("div");
         this.title.className = "title-text";
-        this.title.innerText = this.titleText;
 
         this.leftSection.appendChild(this.logo);
         this.leftSection.appendChild(this.title);
@@ -49,15 +51,45 @@ class TitleBar{
         this.rightSection = document.createElement("div");
         this.rightSection.className = "title-right";
 
-        this.profile = document.createElement("img");
-        this.profile.className = "title-profile";
-        this.profile.src = this.profileImg;
+        //removing profile
+        // this.profile = document.createElement("img");
+        // this.profile.className = "title-profile";
+        // this.profile.src = this.profileImg;
 
-        this.rightSection.appendChild(this.profile);
+        // this.rightSection.appendChild(this.profile);
+
+        this.buttonContainer = document.createElement("div");
+        this.buttonContainer.className = "title-buttons";
+
+        this.rightSection.appendChild(this.buttonContainer);
 
         this.titleBar.appendChild(this.leftSection);
         this.titleBar.appendChild(this.rightSection);
 
         this.container.appendChild(this.titleBar);
+    }
+    setButtons(buttons = [], callback) {
+        this.buttonContainer.innerHTML = "";
+        buttons.forEach(btn => {
+            if (btn.visible === false) return;
+            const button = document.createElement("button");
+            button.className = "title-btn";
+            button.dataset.id = btn.id;
+            if (btn.icon) {
+                const img = document.createElement("img");
+                img.src = btn.icon;
+                img.className = "btn-icon";
+                button.appendChild(img);
+            }
+            if (btn.text) {
+                const span = document.createElement("span");
+                span.innerText = btn.text;
+                button.appendChild(span);
+            }
+            button.addEventListener("click", () => {
+                if (callback) callback(btn.id);
+            });
+            this.buttonContainer.appendChild(button);
+        });
     }
 }
