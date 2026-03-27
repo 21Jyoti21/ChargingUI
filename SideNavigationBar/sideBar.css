@@ -15,12 +15,6 @@ body {
     display: flex;
     flex-direction: column;
 }
-.side-nav.visible {
-    transform: translateX(0);
-}
-.side-nav.hidden {
-    transform: translateX(-100%);
-}
 .side-nav.open {
     transform: translateX(0);
 }
