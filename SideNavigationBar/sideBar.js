@@ -7,6 +7,9 @@ class SideNavigationBar {
         this._createUI();
     }
     _createUI() {
+        this.overlay = document.createElement("div");
+        this.overlay.className = "overlay hidden";
+
         this.sidebar = document.createElement("div");
         this.sidebar.className = "side-nav visible";
 
@@ -18,15 +21,29 @@ class SideNavigationBar {
 
         this.sidebar.appendChild(this.header.getElement());
         this.sidebar.appendChild(this.menu.getElement());
-        this.container.appendChild(this.sidebar);
+
+        this.overlay.appendChild(this.sidebar);
+        this.container.appendChild(this.overlay);
+        this.overlay.addEventListener("click", (e) => {
+            if (e.target === this.overlay) {
+                this.hide();
+            }
+        });
     }
     show() {
-        this.sidebar.classList.remove("hidden");
-        this.sidebar.classList.add("visible");
+        this.overlay.classList.remove("hidden");
+        this.overlay.classList.add("visible");
+
+        setTimeout(() => {
+            this.sidebar.classList.add("open");
+        }, 10)
     }
     hide() {
-        this.sidebar.classList.remove("visible");
-        this.sidebar.classList.add("hidden");
+        this.sidebar.classList.remove("open");
+        setTimeout(() => {
+            this.overlay.classList.remove("visible");
+            this.overlay.classList.add("hidden");
+        }, 300);
     }
     setHeader(htmlText) {
         this.header.setHeader(htmlText);

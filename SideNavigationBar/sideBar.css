@@ -5,7 +5,7 @@ body {
 .side-nav {
     position: relative;
     width: 260px;
-    height: 600px;
+    height: 100%;
     background: linear-gradient(to bottom, white,#a6b8ff);
     box-shadow: 2px 0 8px rgba(0,0,0,0.2);
 
@@ -20,6 +20,9 @@ body {
 }
 .side-nav.hidden {
     transform: translateX(-100%);
+}
+.side-nav.open {
+    transform: translateX(0);
 }
 .side-header {
     padding: 16px;
@@ -114,4 +117,25 @@ body {
     width: 30px;
     font-size: 22px;
     color: #555;
+}
+.overlay {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 100%);
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+.overlay.visible {
+    opacity: 1;
+}
+.container {
+    position: relative;
 }

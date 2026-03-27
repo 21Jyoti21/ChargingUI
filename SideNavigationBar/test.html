@@ -13,22 +13,22 @@
 </head>
 <body>
     <div class="container">
-    <div class="lcd">
-      <h2 id="line1">Side Navigation Bar Demo</h2>
-      <hr>
-      <div>
-        <button onclick="sideBar.show()"> Show </button>
-        <button onclick="sideBar.hide()"> Hide </button>
-        <button onclick="sideBar.setHeader('The Drivool Technologies')"> Set Header </button>
-        <button onclick="sideBar.setMenu(MENU_DATA,onMenuItemClicked)"> Set Menu </button> 
+      <div class="lcd">
+        <h2 id="line1">Side Navigation Bar Demo</h2>
+        <hr>
+        <div>
+          <button onclick="sideBar.show()"> Show </button>
+          <button onclick="sideBar.hide()"> Hide </button>
+          <button onclick="sideBar.setHeader('The Drivool Technologies')"> Set Header </button>
+          <button onclick="sideBar.setMenu(MENU_DATA,onMenuItemClicked)"> Set Menu </button> 
+        </div>
+        <hr>
       </div>
-      <hr>
+      <div id="side-container"></div>
     </div>
-    <div id="side-container"></div>
-  </div>
   <script>
     const sideBar=new SideNavigationBar(
-        document.getElementById("side-container"),
+        document.querySelector(".container"),
         {
 
         }
