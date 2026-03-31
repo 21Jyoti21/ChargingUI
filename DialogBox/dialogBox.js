@@ -3,8 +3,12 @@ class DialogBox {
         this.container = container; 
         this.title = options.title || "Dialog Box Title";
         this.content = options.content || "Some inner content...";
-        this.onClose = options.onClose || function () {};
+        
+        this.defaultTitle = this.title;
+        this.defaultContent = this.content;
 
+        this.onClose = options.onClose || function () {};
+        this.isLocked = false;
         this._createUI();
     }
     _createUI() {
@@ -49,25 +53,146 @@ class DialogBox {
             }
         });
     }
+    resetToDefault() {
+         if (this.isLocked) {
+            return;
+        }
+        this.setTitle(this.defaultTitle);
+        this.setContent(this.defaultContent);
+    }
     show() {
-        this.overlay.classList.remove("hidden");
-        this.overlay.classList.add("visible");
-
-        setTimeout(() => {
-            this.dialog.classList.add("open");
-        }, 5)
+        this._runIfAllowed(() => {
+            
+            this.overlay.classList.remove("hidden");
+            this.overlay.classList.add("visible");
+            //adding animation for dialog box
+            this.dialog.classList.remove("closing");
+            setTimeout(() => {
+                this.dialog.classList.add("open");
+            }, 5);
+        });
     }
     hide() {
-        this.dialog.classList.remove("open");
-        setTimeout(() => {
-            this.overlay.classList.remove("visible");
-            this.overlay.classList.add("hidden");
-        }, 5);
+        this._runIfAllowed(() => {
+            this.dialog.classList.remove("open");
+            this.dialog.classList.add("closing");
+
+            setTimeout(() => {
+                this.overlay.classList.remove("visible");
+                this.overlay.classList.add("hidden");
+                //adding animation for dialog box
+                this.dialog.classList.remove("closing");
+            }, 5);
+        });
     }
     setContent(content) {
         this.body.innerHTML = content;
     }
     setTitle(title) {
         this.titleEl.innerText = title;
+    }
+    showYesNoDialog(options, callback) {
+        this._runIfAllowed(() => {
+            const { icon, title, message } = options;
+            
+            this.setTitle(title || "Confirmation");
+            
+            this.setContent(`
+                <div style="text-align:center">
+                ${icon ? `<img src="${icon}" style="width:40px;margin-bottom:10px;">` : ""}
+                <p>${message || "Are you sure?"}</p>
+                <div style="margin-top:15px">
+                <button id="yesBtn">YES</button>
+                <button id="noBtn">NO</button>
+                </div>
+                </div>
+                `);
+                
+                this.show();
+                setTimeout(() => {
+                    this.body.querySelector("#yesBtn").onclick = () => {
+                        this.hide();
+                        callback(true);
+                    };
+                    
+                    this.body.querySelector("#noBtn").onclick = () => {
+                        this.hide();
+                        callback(false);
+                    };
+                }, 10);
+        });                                
+    }
+    showTransientMessage(message, duration = 2000) {
+        this._runIfAllowed(() => {
+            this.setTitle("Message");
+            
+            this.setContent(`
+                <div style="text-align:center">
+                <p>${message}</p>
+                </div>
+                `);
+                
+                this.show();
+                
+                setTimeout(() => {
+                    this.hide();
+                }, duration);
+        });
+    }
+    showStayMessage(message) {
+        this.setTitle("Message");
+        
+        this.setContent(`
+            <div style="text-align:center">
+            <p>${message}</p>
+            <button id="okBtn">OK</button>
+            </div>
+            `);
+            
+        this.show();
+            
+        this.isLocked = true;
+        setTimeout(() => {
+            this.body.querySelector("#okBtn").onclick = () => {
+                this.isLocked = false;
+                this.hide();
+            };
+        }, 10);
+    }
+    //this is kept as guard for stay message dialog box
+    _runIfAllowed(fn) {
+        if (this.isLocked) {
+            alert("Please click OK to close this message");
+            return;
+        }
+        fn();
+    }
+    showMenu(menuItems, callback) {
+        this._runIfAllowed(() => {
+            this.setTitle("Menu");
+            //here generating menu HTML
+            const menuHtml = menuItems.map(item => `
+                <div class="menu-item" data-id="${item.id}">
+                    ${item.label}
+                </div>
+            `).join("");
+            this.setContent(`
+                <div class="menu-container">
+                    ${menuHtml}
+                </div>
+            `);
+            this.show();
+            setTimeout(() => {
+                const items = this.body.querySelectorAll(".menu-item");
+
+                items.forEach(el => {
+                    el.onclick = () => {
+                        const id = el.getAttribute("data-id");
+                        this.hide();
+                        callback(id);
+                    };
+                });
+            }, 10);
+        });
     }
 }

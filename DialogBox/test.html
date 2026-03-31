@@ -13,8 +13,12 @@
         <h2 id="line1">Dialog Box Demo</h2>
         <hr>
         <div>
-            <button onclick="dialog.show()"> Show </button>
+            <button onclick="showDefault()"> Show </button>
             <button onclick="dialog.hide()"> Hide </button>
+            <button onclick="openConfirm()"> Confirmation </button>
+            <button onclick="dialog.showTransientMessage('Saved successfully!')"> Transient Msg </button>
+            <button onclick="dialog.showStayMessage('This will stay until you click OK')"> Stay Msg </button>
+            <button onclick="openMenu()">Menu</button>
         </div>
         <hr>
         </div>
@@ -27,6 +31,38 @@
 
         }
     )
+    function openConfirm() {
+        dialog.showYesNoDialog(
+            {
+                icon: "icon.png",
+                title: "Confirmation",
+                message: "Are you sure?"
+            },
+            (blnYesNo) => {
+                if (blnYesNo) {
+                    console.log("YES clicked");
+                } else {
+                    console.log("NO / Closed");
+                }
+            }
+        );
+    }
+    function showDefault() {
+        dialog.resetToDefault();
+        dialog.show();
+    }
+    function openMenu() {
+        dialog.showMenu(
+            [
+                { id: 1, label: "Edit" },
+                { id: 2, label: "Delete" },
+                { id: 3, label: "Share" }
+            ],
+            (id) => {
+                console.log("Clicked:", id);
+            }
+        );
+    }
   </script>
 </body>
 </html>
