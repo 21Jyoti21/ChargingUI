@@ -30,6 +30,10 @@
     opacity: 0;
     transition: all 0.25s ease;
 }
+.dialog-box.small {
+    width: 280px;
+    height: 260px;
+}
 .dialog-box.open{
     transform: scale(1);
     opacity: 1;
@@ -58,6 +62,35 @@
     padding: 20px;
     overflow-y: auto;
 }
+.dialog-body button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 5px;
+    min-width: 80px;
+    transition: all 0.2s ease;
+}
+.dialog-body button:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+.dialog-body button:active {
+    transform: scale(0.95);
+}
+.dialog-body > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dialog-body > div > div {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
 .overlay.hidden {
     opacity: 0;
     pointer-events: none;
@@ -77,4 +110,21 @@
 }
 .menu-item:hover {
     background: #f5f5f5;
+}
+.stay-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.stay-message {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.stay-footer {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
 }

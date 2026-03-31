@@ -57,6 +57,7 @@ class DialogBox {
          if (this.isLocked) {
             return;
         }
+        this.dialog.classList.remove("small");
         this.setTitle(this.defaultTitle);
         this.setContent(this.defaultContent);
     }
@@ -93,6 +94,7 @@ class DialogBox {
     }
     showYesNoDialog(options, callback) {
         this._runIfAllowed(() => {
+            this.setSize("small");
             const { icon, title, message } = options;
             
             this.setTitle(title || "Confirmation");
@@ -108,18 +110,18 @@ class DialogBox {
                 </div>
                 `);
                 
-                this.show();
-                setTimeout(() => {
-                    this.body.querySelector("#yesBtn").onclick = () => {
-                        this.hide();
-                        callback(true);
-                    };
-                    
-                    this.body.querySelector("#noBtn").onclick = () => {
-                        this.hide();
-                        callback(false);
-                    };
-                }, 10);
+            this.show();
+            setTimeout(() => {
+                this.body.querySelector("#yesBtn").onclick = () => {
+                    this.hide();
+                    callback(true);
+                };
+                
+                this.body.querySelector("#noBtn").onclick = () => {
+                    this.hide();
+                    callback(false);
+                };
+            }, 10);
         });                                
     }
     showTransientMessage(message, duration = 2000) {
@@ -140,14 +142,20 @@ class DialogBox {
         });
     }
     showStayMessage(message) {
+        this.setSize("small");
         this.setTitle("Message");
         
         this.setContent(`
-            <div style="text-align:center">
-            <p>${message}</p>
-            <button id="okBtn">OK</button>
+            <div class="stay-container">
+                <div class="stay-message">
+                    <p>${message}</p>
+                </div>
+
+                <div class="stay-footer">
+                    <button id="okBtn">OK</button>
+                </div>
             </div>
-            `);
+        `);
             
         this.show();
             
@@ -194,5 +202,12 @@ class DialogBox {
                 });
             }, 10);
         });
+    }
+    setSize(size) {
+        this.dialog.classList.remove("small");
+
+        if (size === "small") {
+            this.dialog.classList.add("small");
+        }
     }
 }
