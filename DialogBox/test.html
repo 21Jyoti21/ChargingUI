@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialog Box Demo</title>
+    <link rel="stylesheet" href="./dialogBox.css">
+    <script src="./dialogBox.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="lcd">
+        <h2 id="line1">Dialog Box Demo</h2>
+        <hr>
+        <div>
+            <button onclick="showDefault()"> Show </button>
+            <button onclick="dialog.hide()"> Hide </button>
+            <button onclick="openConfirm()"> Confirmation </button>
+            <button onclick="dialog.showTransientMessage('Saved successfully!')"> Transient Msg </button>
+            <button onclick="dialog.showStayMessage('This will stay until you click OK')"> Stay Msg </button>
+            <button onclick="openMenu()">Menu</button>
+        </div>
+        <hr>
+        </div>
+    <div id="dialog-container"></div>
+  </div>
+  <script>
+    const dialog=new DialogBox(
+        document.getElementById("dialog-container"),
+        {
+
+        }
+    )
+    function openConfirm() {
+        dialog.showYesNoDialog(
+            {
+                icon: "icon.png",
+                title: "Confirmation",
+                message: "Are you sure?"
+            },
+            (blnYesNo) => {
+                if (blnYesNo) {
+                    console.log("YES clicked");
+                } else {
+                    console.log("NO / Closed");
+                }
+            }
+        );
+    }
+    function showDefault() {
+        dialog.resetToDefault();
+        dialog.show();
+    }
+    function openMenu() {
+        dialog.showMenu(
+            [
+                { id: 1, label: "Edit" },
+                { id: 2, label: "Delete" },
+                { id: 3, label: "Share" }
+            ],
+            (id) => {
+                console.log("Clicked:", id);
+            }
+        );
+    }
+  </script>
+</body>
+</html>
